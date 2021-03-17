@@ -1,41 +1,63 @@
-import React , {Component} from 'react'
+import React  , {useState}from 'react'
 import  './style.css'
-import gamepad from '../../assets/Icon-gamepad.svg'
-import person from '../../assets/Icon-person.svg'
+import Profile from '../profile/Profile'
+import Timer from '../timer/Timer'
+import {EASY_ARRAY} from '../../data/utils'
+import {MEDIUM_ARRAY}from '../../data/utils'
+import {HARD_ARRAY} from '../../data/utils'
 
-export default class Dashboard extends Component {
-    constructor(props){
-        super(props);
-     this.state={}   
-    }
-    render(){
+export default function Dashboard ({userName , difficultyLevel}) {
+    const [level,setLevel] =useState(difficultyLevel)
+    const [item,setItem] = useState(EASY_ARRAY[Math.floor(Math.random() * EASY_ARRAY.length)])
+    const [factor,setFactor] = useState(1)
+   
+    const itemShow = () => {
+        if(level === 'EASY')  {
+            setItem(EASY_ARRAY[Math.floor(Math.random() * EASY_ARRAY.length)]);
+            setFactor(1.5)
+        }
+         else if(level === 'MEDIUM'){
+            setItem(MEDIUM_ARRAY[Math.floor(Math.random() * EASY_ARRAY.length)]);
+            setFactor(1.5)
+        }
+        else {
+            setItem(HARD_ARRAY[Math.floor(Math.random() * EASY_ARRAY.length)]);
+            setFactor(2)
+        } 
+      
+     }
+     const incrementFactor = ()=>{
+        setFactor(prevState => prevState + 0.01);
+     }
+        const checkUserInput = (e)=>{
+            console.log(e.target.value)
+            if(e.target.value === item){
+                itemShow()
+                e.target.value = ''
+                incrementFactor()
+            }
+        }
         return(
-            <div style={{ display:'flex', flex:1, flexDrection:'row',margin:'20px' ,justifyContent:'space-between'}}>
+            <div style={{ display:'flex', flex:1, flexDrection:'row',margin:'10px', padding:'10px',
+            justifyContent:'space-between'}}>
                 <div className='column'>
-                <div className='left-section'>
-                    <div className='column'>
-                    <img src={person} alt='Player' width='30' height='30' />
-                    <img src={gamepad} alt='Player' width='40' height='40' />
+                    <Profile userName={userName} difficultyLevel={difficultyLevel}/>
+                    <h3 className='top-details'>SCOREBOARD</h3>
+                    <h3 className='top-details'>QUIT GAME</h3>
+                </div>
+                
+                <div class='middle-section column'>
+                    <div class='random-word'>{item}</div>
+                    <Timer wordItem={item} difficultyFactor={factor}/>
+                    <input className='word-input' type='text' name='userInput' onChange ={checkUserInput} ></input>
                     </div>
-                    <div class='top-details column'>
-                    <div>{this.props.userName}</div>
-                    <div>Level:{this.props.difficultyLevel}</div>
-                    </div>
-                </div>
-                <div className='top-details'>
-                    SCOREBOARD
-                </div>
-                </div>
-               
-                <div class='middle-section'>
-                    <div style={{color:'white'}}>Mid section</div>
-                </div>
-                <div className='right-section top-details'>
+                <div className='right-section top-details column'>
                     <div>fast fingers</div>
                     <div>SCORE:00.30</div>
                 </div>
 
+
             </div>
         );
-    }
+    
 }
