@@ -64,6 +64,7 @@ export default function Dashboard ({userName , difficultyLevel}) {
         (setTimeLeft(value))
         if(parseFloat(timeLeft) === 0) setQuitGame(true)
         console.log('quitGame',quitGame)
+        setScore(0.45)
     }
 
     

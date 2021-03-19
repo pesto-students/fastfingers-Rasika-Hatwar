@@ -6,7 +6,7 @@ const FULL_DASH_ARRAY = 283;
 let passedTime = 0;
 
 
-export default function Timer ({timeLimit,handleQuitGame}) {
+export default function Timer ({timeLimit, handleQuitGame}) {
     
     const [ timeLeft,setTimeLeft] = useState(timeLimit);
     const [stroke, setStroke] = useState("283 283");
@@ -35,27 +35,6 @@ export default function Timer ({timeLimit,handleQuitGame}) {
           return () => clearInterval(timerInterval);
           
     })
-
-  
-    // useEffect(()=>{
-        
-    //     const timerInterval = setInterval(() => {
-    //          if (timeLeft > 0) {
-    //          setSecondsPassed(passedTime => passedTime + 1)
-    //         passedTime = passedTime + 1
-    //         setTimeLeft(TIME_LIMIT - passedTime);
-    //         setCircleDasharray();
-    //          }
-    //          else{
-    //             clearInterval(timerInterval)  
-    //          }
-    //       }, 1000); 
-    //       console.log("use efect get called");
-    //       return () => clearInterval(timerInterval);
-          
-    // })
-    
-
 
      const formatTime = (time) =>
       {
