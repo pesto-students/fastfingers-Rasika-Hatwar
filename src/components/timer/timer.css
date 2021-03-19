@@ -1,0 +1,44 @@
+.base-timer {
+    position: relative;
+    height: 200px;
+    width: 200px;
+  }
+  .base-timer__circle {
+    fill: none;
+    stroke: none;
+  }
+
+  .base-timer__path-elapsed {
+    stroke-width: 5px;
+    stroke:grey
+    /* stroke: white;
+    opacity: 0.23; */
+  }
+  .base-timer__label {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color:white
+  }
+  .base-timer__path-remaining {
+    stroke-width: 7px;
+    stroke-linecap: round;
+    transform: rotate(90deg);
+    transform-origin: center;
+    transition: 1s linear all;
+    stroke: currentColor
+    /* stroke:#ff5155; */
+    /* color:#ff5155 */
+  }
+  .info {
+    color: #FF5155;
+}
+  
+  .base-timer__svg {
+    transform: scaleX(-1);
+  }
