@@ -10,8 +10,9 @@
 
   .base-timer__path-elapsed {
     stroke-width: 5px;
-    stroke: white;
-    opacity: 0.23;
+    stroke:grey
+    /* stroke: white;
+    opacity: 0.23; */
   }
   .base-timer__label {
     position: absolute;
@@ -30,9 +31,13 @@
     transform: rotate(90deg);
     transform-origin: center;
     transition: 1s linear all;
-    stroke: currentColor;
-    color:#ff5155
+    stroke: currentColor
+    /* stroke:#ff5155; */
+    /* color:#ff5155 */
   }
+  .info {
+    color: #FF5155;
+}
   
   .base-timer__svg {
     transform: scaleX(-1);

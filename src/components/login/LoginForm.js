@@ -56,7 +56,7 @@ export default class LoginForm extends Component {
                     <option value='MEDIUM'>MEDIUM</option>
                     <option value='HARD'>HARD</option>
                 </select>
-                 {errorMessage && <div class='subtitle-text'>{errorMessage}</div>}
+                 {(!userName && errorMessage)&& <div class='subtitle-text'>{errorMessage}</div>}
                 <div className='start-game subTitle' onClick={this.showDashboard }>
                 <img src={playbutton} alt='Start'/>
                 <h3 className='subtitle-text'>START GAME</h3>

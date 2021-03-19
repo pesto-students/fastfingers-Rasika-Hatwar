@@ -2,22 +2,60 @@ import React  , {useState, useEffect}from 'react'
 import  './timer.css'
 
 
-export default function Timer ({wordItem,difficultyFactor}) {
-    // const TIME_LIMIT = (wordItem.length) / parseFloat(difficultyFactor)
-    // const [timeLimit, setTimeLimit] = useState(TIME_LIMIT)
-    const TIME_LIMIT = 2;
-    const [passedTime, setSecondsPassed] = useState(0);
-    const [ timeLeft,setTimeLeft] = useState(TIME_LIMIT);
+const FULL_DASH_ARRAY = 283;
+let passedTime = 0;
 
+
+export default function Timer ({timeLimit,handleQuitGame}) {
+    
+    const [ timeLeft,setTimeLeft] = useState(timeLimit);
+    const [stroke, setStroke] = useState("283 283");
+
+    useEffect(() => {
+        passedTime = 0;
+        if (timeLimit<2) setTimeLeft(2)
+        else setTimeLeft(timeLimit);
+      }, [timeLimit]);
+    
 
     useEffect(()=>{
+        
         const timerInterval = setInterval(() => {
-            setSecondsPassed(passedTime => passedTime + 1)
-            setTimeLeft(TIME_LIMIT - passedTime);
-            formatTime(timeLeft);
+             if (timeLeft > 0) {
+            passedTime = passedTime + 1
+            setTimeLeft(timeLimit - passedTime);
+            const strokeValue = calculateTimeFraction(timeLeft, timeLimit) * FULL_DASH_ARRAY;
+            setStroke(`${strokeValue} 283`);
+             }
+             else{
+              handleQuitGame(timeLeft);
+                clearInterval(timerInterval)  
+             }
           }, 1000); 
           return () => clearInterval(timerInterval);
+          
     })
+
+  
+    // useEffect(()=>{
+        
+    //     const timerInterval = setInterval(() => {
+    //          if (timeLeft > 0) {
+    //          setSecondsPassed(passedTime => passedTime + 1)
+    //         passedTime = passedTime + 1
+    //         setTimeLeft(TIME_LIMIT - passedTime);
+    //         setCircleDasharray();
+    //          }
+    //          else{
+    //             clearInterval(timerInterval)  
+    //          }
+    //       }, 1000); 
+    //       console.log("use efect get called");
+    //       return () => clearInterval(timerInterval);
+          
+    // })
+    
+
 
      const formatTime = (time) =>
       {
@@ -29,15 +67,11 @@ export default function Timer ({wordItem,difficultyFactor}) {
         return `${minutes}:${seconds}`;
       }
 
-      const COLOR_CODES = {
-        info: {
-          color: "white"
-        }
-      };
-      
-      let remainingPathColor = COLOR_CODES.info.color;
-         
-      
+
+      function calculateTimeFraction() {
+        return timeLeft / timeLimit;
+      }
+ 
     return(
         <div className="base-timer">
             <svg className="base-timer__svg" viewBox="0 0 100 100" >
@@ -45,8 +79,8 @@ export default function Timer ({wordItem,difficultyFactor}) {
                 <circle className="base-timer__path-elapsed" cx="50" cy="50" r="45" />
                 <path
                     id="base-timer-path-remaining"
-                    stroke-dasharray="283"
-                    className={`base-timer__path-remaining ${remainingPathColor}`}
+                    strokeDasharray ={stroke}
+                    className ="base-timer__path-remaining info"
                     d="
                     M 50, 50
                     m -45, 0
