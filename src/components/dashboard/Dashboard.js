@@ -42,7 +42,7 @@ export default function Dashboard({
 
   useEffect(() => {
     itemShow();
-  }, [level]);
+  }, [level, timeLeft]);
 
   const incrementFactor = () => {
     setFactor((prevState) => parseFloat(prevState) + 0.01);
@@ -59,8 +59,6 @@ export default function Dashboard({
       itemShow();
       e.target.value = "";
       incrementFactor();
-    } else {
-      handleQuitGame();
     }
   };
 

@@ -24,7 +24,7 @@ export default function Timer({ timeLimit, handleQuitGame }) {
           calculateTimeFraction(newTimeLeft, timeLimit) * FULL_DASH_ARRAY;
         console.log("STROKE VALUE", strokeValue);
         setStroke(`${strokeValue} 283`);
-      } else {
+      } else if (timeLeft === 0) {
         handleQuitGame(0);
         clearInterval(timerInterval);
       }
