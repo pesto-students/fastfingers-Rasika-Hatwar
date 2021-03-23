@@ -1,25 +1,44 @@
-.column{
-    display:flex;
-    flex-direction:column;
-    
+.column {
+  display: flex;
+  flex-direction: column;
 }
-.top-details{
+.top-details {
   /* font-family: Breamcatcher; */
   font-size: 44px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
-  letter-spacing: normal; 
+  letter-spacing: normal;
   color: #ff5155;
-  margin-left:20px
+  margin-left: 20px;
 }
 
-.middle-section{
- display: flex;
- justify-content: center;
- align-items: center;
+.middle-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.random-word{
+
+.right-section {
+  align-items: flex-end;
+}
+.stop-btn {
+  display: flex;
+  justify-content: flex-start;
+  position: absolute;
+  border: none;
+  bottom: 0%;
+  left: 0%;
+  align-items: center;
+  background-color: transparent;
+  outline: none !important;
+}
+.stop-btn:hover {
+  transition: none !important;
+  border: none !important;
+  outline: none !important;
+}
+.random-word {
   text-shadow: 0 0 16px rgba(0, 0, 0, 0.16);
   /* font-family: Gotham; */
   font-size: 40px;
@@ -29,10 +48,9 @@
   line-height: 1.2;
   letter-spacing: normal;
   text-align: left;
-  color: white;
   text-transform: uppercase;
 }
-.word-input{
+.word-input {
   height: 60px;
   width: 530px;
   margin: 45px 49.4px 30px 35.3px;
@@ -40,19 +58,18 @@
   border-radius: 15px;
   box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.8);
   background-color: white;
-  color:#032228;
+  color: #032228;
   text-transform: uppercase;
   text-align: center;
   font-size: 35px;
 }
-.score-section{
-    /* font-family: Breamcatcher; */
-    font-size: 44px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    letter-spacing: normal; 
-    color: white;
-    margin-left:20px
-  
+.score-section {
+  /* font-family: Breamcatcher; */
+  font-size: 44px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  color: white;
+  margin-left: 20px;
 }

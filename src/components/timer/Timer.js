@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from "react";
 import "./timer.css";
+import { formatTime } from "../../data/utils";
 
 const FULL_DASH_ARRAY = 283;
-let passedTime = 0;
 
 export default function Timer({ timeLimit, handleQuitGame }) {
   const [timeLeft, setTimeLeft] = useState(timeLimit);
+  // const [previousTimeLeft, setPreviousTimeLeft] = useState(timeLimit);
   const [stroke, setStroke] = useState("283 283");
 
   useEffect(() => {
-    passedTime = 0;
     if (timeLimit < 2) setTimeLeft(2);
     else setTimeLeft(timeLimit);
   }, [timeLimit]);
 
   useEffect(() => {
+    // const score = previousTimeLeft - timeLeft;
+    // console.log("SCORE", score);
     const timerInterval = setInterval(() => {
       if (timeLeft > 0) {
-        passedTime = passedTime + 1;
         const newTimeLeft = timeLeft < 1 ? 0 : timeLeft - 1;
         setTimeLeft(newTimeLeft);
         const strokeValue =
@@ -25,22 +26,22 @@ export default function Timer({ timeLimit, handleQuitGame }) {
         console.log("STROKE VALUE", strokeValue);
         setStroke(`${strokeValue} 283`);
       } else if (timeLeft === 0) {
-        handleQuitGame(0);
+        handleQuitGame();
         clearInterval(timerInterval);
       }
     }, 1000);
     return () => clearInterval(timerInterval);
-  }, [timeLeft]);
+  }, [handleQuitGame, timeLeft, timeLimit]);
 
-  const formatTime = (time) => {
-    console.log(time, "time format");
-    const minutes = Math.floor(time / 60);
-    let seconds = Math.floor(time % 60);
-    if (seconds < 10) {
-      seconds = `0${seconds}`;
-    }
-    return `${minutes}:${seconds}`;
-  };
+  // const formatTime = (time) => {
+  //   console.log(time, "time format");
+  //   const minutes = Math.floor(time / 60);
+  //   let seconds = Math.floor(time % 60);
+  //   if (seconds < 10) {
+  //     seconds = `0${seconds}`;
+  //   }
+  //   return `${minutes}:${seconds}`;
+  // };
 
   function calculateTimeFraction(remainingTime, totalTimeLimit) {
     console.log("remainingTime, totalTimeLimit", remainingTime, totalTimeLimit);
