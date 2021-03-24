@@ -1,0 +1,35 @@
+.scoreBoard {
+  width: 200px;
+  height: 380px;
+  margin: 25px;
+  padding: 20px;
+  border-radius: 15px;
+  border: solid 3px #ff5155;
+  font-size: 25px;
+  color: #ff5155;
+  font-family: sans-serif;
+}
+
+.scores {
+  font-family: sans-serif;
+  font-size: 15px;
+  text-align: left;
+  color: #ffffff;
+}
+
+.highScore {
+  font-size: 11px;
+  text-align: left;
+  color: #ff5155;
+}
+
+.gameNameWithScore {
+  font-size: 20px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+}
