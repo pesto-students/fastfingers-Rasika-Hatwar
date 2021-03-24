@@ -18,7 +18,6 @@ export default function Dashboard({
   difficultyLevel,
   difficultyFactor,
 }) {
-  console.log(difficultyLevel, "difficultyLevel");
   const [item, setItem] = useState("");
   const [level, setLevel] = useState(difficultyLevel);
   const [factor, setFactor] = useState(difficultyFactor);
@@ -42,14 +41,15 @@ export default function Dashboard({
         newWord = HARD_ARRAY[Math.floor(Math.random() * HARD_ARRAY.length)];
       }
     }
+
+    const newTime = Math.ceil(newWord.length / factor) * 1000;
     setItem(newWord);
-    setTimeLimit(Math.round(newWord.length / parseFloat(factor)));
+    setTimeLimit(newTime < 2000 ? 2000 : newTime);
     setUserInput("");
   };
 
   useEffect(() => {
     itemShow();
-
     const scoreCount = setInterval(() => {
       if (!quitGame) {
         currentScore = currentScore + 1;
@@ -62,11 +62,26 @@ export default function Dashboard({
     };
   }, [quitGame]);
 
+  // useEffect(() => {
+  //   if (!quitGame) {
+  //     const scoreCount = setInterval(() => {
+  //       setScore(score + 1);
+  //       console.log("score ", score + 1);
+  //     }, 1000);
+
+  //     return () => {
+  //       clearInterval(scoreCount);
+  //     };
+  //   } else {
+  //     setScore(0);
+  //   }
+  // }, [score]);
+
   const checkUserInput = (e) => {
     setUserInput(e.target.value);
-    if (e.target.value === item) {
+    if (e.target.value.toLocaleLowerCase() === item.toLocaleLowerCase()) {
       itemShow();
-      e.target.value = "";
+
       setFactor((prevState) => parseFloat(prevState) + 0.01);
       if (parseFloat(factor) >= 1.5 && parseFloat(factor) < 2)
         setLevel("MEDIUM");
@@ -75,6 +90,7 @@ export default function Dashboard({
   };
 
   const handleQuitGame = () => {
+    // setTimeLeft(value);
     const sessionStorage = window.sessionStorage;
     let data = JSON.parse(window.sessionStorage.getItem("scoreBoard")) || [];
     const currentGame = {
@@ -87,7 +103,6 @@ export default function Dashboard({
         data[i]["hasHighScore"] = false;
       }
     }
-    console.log(data.length, "data length");
     if (data.length === 0) {
       currentGame.hasHighScore = true;
     }
@@ -98,6 +113,7 @@ export default function Dashboard({
     sessionStorage.setItem("scoreBoard", JSON.stringify(data));
     setQuitGame(true);
     setGameCount((prevState) => prevState + 1);
+    setScore(0);
   };
   const restartGame = () => {
     setQuitGame(false);
@@ -125,7 +141,6 @@ export default function Dashboard({
             {/* {!quitGame &&  */}
             <ScoreBoard />
             {/* } */}
-
             {quitGame ? (
               <span className="top-details" onClick={renderLoginForm}>
                 QUIT GAME
@@ -142,7 +157,8 @@ export default function Dashboard({
             <div className="middle-section column">
               <TargetWord targetWord={item} userInput={userInput} />
               <Timer
-                timeLimit={timeLimit * 1000}
+                timeLimit={timeLimit}
+                key={item}
                 handleQuitGame={handleQuitGame}
               />
               <input
@@ -157,7 +173,7 @@ export default function Dashboard({
           {quitGame && (
             <div className="score-section middle-section column">
               <div className="scoretitle">SCORE : GAME {gameCount}</div>
-              <div className="score">{formatTime(score)}</div>
+              <div className="score">{formatTime(currentScore)}</div>
               <div className="scoretitle">New High Score</div>
               <button className="replay-btn" onClick={restartGame}>
                 <img src={ReloadIcon} alt="" width="50px" height="50px" />

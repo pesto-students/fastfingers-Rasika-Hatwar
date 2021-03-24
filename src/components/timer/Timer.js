@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from "react";
+import ProtoTypes from "prop-types";
 import "./timer.css";
 import { newFormatTime } from "../../data/utils";
-import ProtoTypes from "prop-types";
-
 const FULL_DASH_ARRAY = 283;
+let timePassed = 0;
+let timerInterval = "";
+
 export default function Timer({ timeLimit, handleQuitGame }) {
   const [timeLeft, setTimeLeft] = useState(timeLimit);
   const [stroke, setStroke] = useState("283 283");
   useEffect(() => {
-    if (timeLimit < 2) setTimeLeft(2);
-    else setTimeLeft(timeLimit);
+    timePassed = 0;
+    setTimeLeft(timeLimit);
   }, [timeLimit]);
   useEffect(() => {
-    const timerInterval = setInterval(() => {
+    timerInterval = setInterval(() => {
       if (timeLeft > 0) {
-        const newTimeLeft = timeLeft < 1 ? 0 : timeLeft - 100;
-        setTimeLeft(newTimeLeft);
+        timePassed += 100;
+        setTimeLeft(timeLimit - timePassed);
         const strokeValue =
-          calculateTimeFraction(newTimeLeft, timeLimit) * FULL_DASH_ARRAY;
-        console.log("STROKE VALUE", strokeValue);
-        setStroke(`${strokeValue} 283`);
+          calculateTimeFraction(timeLeft, timeLimit) * FULL_DASH_ARRAY;
+        setStroke(`${strokeValue} ${FULL_DASH_ARRAY}`);
       } else if (timeLeft === 0) {
         handleQuitGame();
         clearInterval(timerInterval);
@@ -27,7 +28,6 @@ export default function Timer({ timeLimit, handleQuitGame }) {
     }, 100);
     return () => clearInterval(timerInterval);
   }, [handleQuitGame, timeLeft, timeLimit]);
-
   function calculateTimeFraction(remainingTime, totalTimeLimit) {
     const rawTimeFraction = remainingTime / totalTimeLimit;
     return rawTimeFraction - (1 / totalTimeLimit) * (1 - rawTimeFraction);
@@ -53,9 +53,8 @@ export default function Timer({ timeLimit, handleQuitGame }) {
       <span className="base-timer__label">{newFormatTime(timeLeft)}</span>
     </div>
   );
-
-  Timer.protoTypes = {
-    timeLimit: ProtoTypes.number.isRequired,
-    handleQuitGame: ProtoTypes.func.isRequired,
-  };
 }
+Timer.protoTypes = {
+  timeLimit: ProtoTypes.number.isRequired,
+  handleQuitGame: ProtoTypes.func.isRequired,
+};
