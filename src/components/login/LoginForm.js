@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./style.css";
+import "./login.css";
 import keyboard from "../../assets/keyboard.svg";
 import playbutton from "../../assets/Icon-play.svg";
 import Dashboard from "../dashboard/Dashboard";
@@ -59,6 +59,9 @@ export default function LoginForm() {
             placeholder="type your name"
             onChange={handleChange}
           ></input>
+          {!userName && errorMessage && (
+            <div class="error-text">{errorMessage}</div>
+          )}
           <select
             className="select-input"
             name="difficultyLevel"
@@ -68,9 +71,7 @@ export default function LoginForm() {
             <option value="MEDIUM">MEDIUM</option>
             <option value="HARD">HARD</option>
           </select>
-          {!userName && errorMessage && (
-            <div class="subtitle-text">{errorMessage}</div>
-          )}
+
           <div className="start-game subTitle" onClick={showDashboard}>
             <img src={playbutton} alt="Start" />
             <h3 className="subtitle-text">START GAME</h3>
