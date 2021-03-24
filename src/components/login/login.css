@@ -1,13 +1,13 @@
 .login-container {
-  padding-top: 133px;
+  padding-top: 100px;
   display: flex;
   flex: 1;
   flex-direction: column;
   align-items: center;
 }
 .app-title {
-  font-family: LaserCorpsGradient;
-  font-size: 81px;
+  font-family: "Titan One", cursive;
+  font-size: 10rem;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -15,18 +15,23 @@
   letter-spacing: normal;
   text-align: center;
   color: #ff5155;
+  padding-bottom: 2px;
 }
 .subTitle {
   display: flex;
   flex-direction: row;
   align-items: center;
+  font-size: 3rem;
+  font-family: "Open Sans", sans-serif;
+  color: #ff5155;
 }
 .start-game {
-  padding-top: 80px;
+  padding-top: 40px;
+  cursor: pointer;
 }
 .subtitle-text {
-  font-family: Gotham;
-  font-size: 26px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 2rem;
   font-weight: 500;
   font-stretch: normal;
   font-style: normal;
@@ -36,7 +41,9 @@
   padding-right: 11px;
 }
 .error-text {
-  font-size: 26px;
+  padding-right: 250px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 2rem;
   font-weight: 500;
   font-stretch: normal;
   font-style: normal;
@@ -52,37 +59,42 @@
 }
 .name-input {
   padding: 15px;
-  font-size: 30px;
+  font-size: 2.5rem;
   outline: none;
   width: 30%;
-  color: #032228;
+  text-transform: uppercase;
+  color: #032228 !important;
   border-radius: 15px;
   box-shadow: 0 3px 16px 0 rgb(0 0 0 / 80%);
-  background-color: #ababab;
+  background-color: #ababab !important;
   margin: 10px;
 }
 ::placeholder {
-  font-family: Breamcatcher;
+  font-family: "Open Sans", sans-serif;
+  background-color: #ababab !important;
   color: #032228;
   text-transform: uppercase;
   opacity: 1; /* Firefox */
 }
 .select-input {
+  font-family: "Open Sans", sans-serif;
   color: #97a5a7;
   border-radius: 15px;
   padding: 15px;
   outline: none;
   width: 32%;
   background-color: transparent;
-  font-size: 30px;
+  font-size: 3rem;
   box-shadow: 0 3px 16px 0 rgb(0 0 0 / 80%);
   margin: 10px;
 }
 option {
-  font-size: 30px;
+  font-size: 2.5rem;
+  outline: none;
   color: #032228;
   background-color: #ababab;
   border-radius: 30px;
+  font-family: "Open Sans", sans-serif;
 }
 
 option:checked {

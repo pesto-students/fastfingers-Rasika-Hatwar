@@ -62,21 +62,6 @@ export default function Dashboard({
     };
   }, [quitGame]);
 
-  // useEffect(() => {
-  //   if (!quitGame) {
-  //     const scoreCount = setInterval(() => {
-  //       setScore(score + 1);
-  //       console.log("score ", score + 1);
-  //     }, 1000);
-
-  //     return () => {
-  //       clearInterval(scoreCount);
-  //     };
-  //   } else {
-  //     setScore(0);
-  //   }
-  // }, [score]);
-
   const checkUserInput = (e) => {
     setUserInput(e.target.value);
     if (e.target.value.toLocaleLowerCase() === item.toLocaleLowerCase()) {
@@ -90,7 +75,6 @@ export default function Dashboard({
   };
 
   const handleQuitGame = () => {
-    // setTimeLeft(value);
     const sessionStorage = window.sessionStorage;
     let data = JSON.parse(window.sessionStorage.getItem("scoreBoard")) || [];
     const currentGame = {
@@ -117,6 +101,7 @@ export default function Dashboard({
   };
   const restartGame = () => {
     setQuitGame(false);
+    setUserInput("");
   };
   const renderLoginForm = () => {
     setShowLogin(true);
@@ -131,18 +116,16 @@ export default function Dashboard({
             display: "flex",
             flex: 1,
             flexDirection: "row",
-            margin: "10px",
-            padding: "10px",
+            margin: "15px",
+            padding: "15px",
             justifyContent: "space-between",
           }}
         >
           <div className="column">
             <Profile userName={userName} difficultyLevel={difficultyLevel} />
-            {/* {!quitGame &&  */}
-            <ScoreBoard />
-            {/* } */}
+            {!quitGame && <ScoreBoard />}
             {quitGame ? (
-              <span className="top-details" onClick={renderLoginForm}>
+              <span className="top-details quit-text" onClick={renderLoginForm}>
                 QUIT GAME
               </span>
             ) : (
@@ -172,9 +155,9 @@ export default function Dashboard({
 
           {quitGame && (
             <div className="score-section middle-section column">
-              <div className="scoretitle">SCORE : GAME {gameCount}</div>
+              <div className="score-title">SCORE : GAME {gameCount}</div>
               <div className="score">{formatTime(currentScore)}</div>
-              <div className="scoretitle">New High Score</div>
+              <div>New High Score</div>
               <button className="replay-btn" onClick={restartGame}>
                 <img src={ReloadIcon} alt="" width="50px" height="50px" />
                 <span className="top-details">PLAY AGAIN</span>
@@ -183,9 +166,9 @@ export default function Dashboard({
           )}
           <div className="right-section top-details column">
             <div>fast fingers</div>
-            {/* {!quitGame && ( */}
-            <div className="top-details">SCORE: {formatTime(score)}</div>
-            {/* )} */}
+            {!quitGame && (
+              <div className="top-details">SCORE: {formatTime(score)}</div>
+            )}
           </div>
         </div>
       )}

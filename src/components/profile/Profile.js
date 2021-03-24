@@ -12,7 +12,7 @@ export default function Profile({ userName, difficultyLevel }) {
       </div>
       <div className="left-section">
         <img src={gamepad} alt="Player" width="30" height="30" />
-        <div class="profile-details">Level:{difficultyLevel}</div>
+        <div class="profile-details">Level:&nbsp;{difficultyLevel}</div>
       </div>
     </div>
   );
