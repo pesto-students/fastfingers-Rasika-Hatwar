@@ -33,6 +33,15 @@
   background-color: transparent;
   outline: none !important;
 }
+.replay-btn {
+  display: flex;
+  justify-content: center;
+  border: none;
+  align-items: center;
+  background-color: transparent;
+  outline: none !important;
+  margin-top: 20px;
+}
 .stop-btn:hover {
   transition: none !important;
   border: none !important;
