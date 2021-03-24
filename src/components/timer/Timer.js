@@ -1,57 +1,37 @@
 import React, { useState, useEffect } from "react";
+import ProtoTypes from "prop-types";
 import "./timer.css";
-import { formatTime } from "../../data/utils";
-
+import { newFormatTime } from "../../data/utils";
 const FULL_DASH_ARRAY = 283;
+let timePassed = 0;
+let timerInterval = "";
 
 export default function Timer({ timeLimit, handleQuitGame }) {
   const [timeLeft, setTimeLeft] = useState(timeLimit);
-  // const [previousTimeLeft, setPreviousTimeLeft] = useState(timeLimit);
   const [stroke, setStroke] = useState("283 283");
-
   useEffect(() => {
-    if (timeLimit < 2) setTimeLeft(2);
-    else setTimeLeft(timeLimit);
+    timePassed = 0;
+    setTimeLeft(timeLimit);
   }, [timeLimit]);
-
   useEffect(() => {
-    // const score = previousTimeLeft - timeLeft;
-    // console.log("SCORE", score);
-    const timerInterval = setInterval(() => {
+    timerInterval = setInterval(() => {
       if (timeLeft > 0) {
-        const newTimeLeft = timeLeft < 1 ? 0 : timeLeft - 1;
-        setTimeLeft(newTimeLeft);
+        timePassed += 100;
+        setTimeLeft(timeLimit - timePassed);
         const strokeValue =
-          calculateTimeFraction(newTimeLeft, timeLimit) * FULL_DASH_ARRAY;
-        console.log("STROKE VALUE", strokeValue);
-        setStroke(`${strokeValue} 283`);
+          calculateTimeFraction(timeLeft, timeLimit) * FULL_DASH_ARRAY;
+        setStroke(`${strokeValue} ${FULL_DASH_ARRAY}`);
       } else if (timeLeft === 0) {
         handleQuitGame();
         clearInterval(timerInterval);
       }
-    }, 1000);
+    }, 100);
     return () => clearInterval(timerInterval);
   }, [handleQuitGame, timeLeft, timeLimit]);
-
-  // const formatTime = (time) => {
-  //   console.log(time, "time format");
-  //   const minutes = Math.floor(time / 60);
-  //   let seconds = Math.floor(time % 60);
-  //   if (seconds < 10) {
-  //     seconds = `0${seconds}`;
-  //   }
-  //   return `${minutes}:${seconds}`;
-  // };
-
   function calculateTimeFraction(remainingTime, totalTimeLimit) {
-    console.log("remainingTime, totalTimeLimit", remainingTime, totalTimeLimit);
     const rawTimeFraction = remainingTime / totalTimeLimit;
-    let rawTime =
-      rawTimeFraction - (1 / totalTimeLimit) * (1 - rawTimeFraction);
-    console.log(rawTime, "RAW TIME");
-    return rawTime < 0 ? 0 : rawTime;
+    return rawTimeFraction - (1 / totalTimeLimit) * (1 - rawTimeFraction);
   }
-
   return (
     <div className="base-timer">
       <svg className="base-timer__svg" viewBox="0 0 100 100">
@@ -70,7 +50,11 @@ export default function Timer({ timeLimit, handleQuitGame }) {
           ></path>
         </g>
       </svg>
-      <span className="base-timer__label">{formatTime(timeLeft)}</span>
+      <span className="base-timer__label">{newFormatTime(timeLeft)}</span>
     </div>
   );
 }
+Timer.protoTypes = {
+  timeLimit: ProtoTypes.number.isRequired,
+  handleQuitGame: ProtoTypes.func.isRequired,
+};

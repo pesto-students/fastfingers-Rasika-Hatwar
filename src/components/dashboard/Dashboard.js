@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./style.css";
+import "./dashboard.css";
 import Profile from "../profile/Profile";
 import Timer from "../timer/Timer";
 import TargetWord from "../dashboard/TargetWord";
@@ -12,12 +12,12 @@ import ReloadIcon from "../../assets/Reload.svg";
 import CrossIcon from "../../assets/Icon-cross.svg";
 import LoginForm from "../login/LoginForm";
 
+let currentScore = 0;
 export default function Dashboard({
   userName,
   difficultyLevel,
   difficultyFactor,
 }) {
-  console.log(difficultyLevel, "difficultyLevel");
   const [item, setItem] = useState("");
   const [level, setLevel] = useState(difficultyLevel);
   const [factor, setFactor] = useState(difficultyFactor);
@@ -41,28 +41,47 @@ export default function Dashboard({
         newWord = HARD_ARRAY[Math.floor(Math.random() * HARD_ARRAY.length)];
       }
     }
+
+    const newTime = Math.ceil(newWord.length / factor) * 1000;
     setItem(newWord);
-    setTimeLimit(Math.round(newWord.length / parseFloat(factor)));
+    setTimeLimit(newTime < 2000 ? 2000 : newTime);
     setUserInput("");
   };
 
   useEffect(() => {
     itemShow();
-    const scoreCount = () => {
-      setTimeout(() => {
-        setScore((prevState) => prevState + 1);
-      }, 1000);
-      return score;
+    const scoreCount = setInterval(() => {
+      if (!quitGame) {
+        currentScore = currentScore + 1;
+        setScore(currentScore);
+      } else if (quitGame) clearTimeout(scoreCount);
+    }, 1000);
+
+    return () => {
+      clearInterval(scoreCount);
     };
-    scoreCount();
-  }, []);
+  }, [quitGame]);
+
+  // useEffect(() => {
+  //   if (!quitGame) {
+  //     const scoreCount = setInterval(() => {
+  //       setScore(score + 1);
+  //       console.log("score ", score + 1);
+  //     }, 1000);
+
+  //     return () => {
+  //       clearInterval(scoreCount);
+  //     };
+  //   } else {
+  //     setScore(0);
+  //   }
+  // }, [score]);
 
   const checkUserInput = (e) => {
-    console.log("on change called");
     setUserInput(e.target.value);
-    if (e.target.value === item) {
+    if (e.target.value.toLocaleLowerCase() === item.toLocaleLowerCase()) {
       itemShow();
-      e.target.value = "";
+
       setFactor((prevState) => parseFloat(prevState) + 0.01);
       if (parseFloat(factor) >= 1.5 && parseFloat(factor) < 2)
         setLevel("MEDIUM");
@@ -84,7 +103,6 @@ export default function Dashboard({
         data[i]["hasHighScore"] = false;
       }
     }
-    console.log(data.length, "data length");
     if (data.length === 0) {
       currentGame.hasHighScore = true;
     }
@@ -94,8 +112,8 @@ export default function Dashboard({
     data.push(currentGame);
     sessionStorage.setItem("scoreBoard", JSON.stringify(data));
     setQuitGame(true);
-    console.log("quitGame", quitGame);
     setGameCount((prevState) => prevState + 1);
+    setScore(0);
   };
   const restartGame = () => {
     setQuitGame(false);
@@ -105,60 +123,72 @@ export default function Dashboard({
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flex: 1,
-        flexDirection: "row",
-        margin: "10px",
-        padding: "10px",
-        justifyContent: "space-between",
-      }}
-    >
-      <div className="column">
-        <Profile userName={userName} difficultyLevel={difficultyLevel} />
-        <ScoreBoard />
+    <>
+      {showLogin && <LoginForm />}
+      {!showLogin && (
+        <div
+          style={{
+            display: "flex",
+            flex: 1,
+            flexDirection: "row",
+            margin: "10px",
+            padding: "10px",
+            justifyContent: "space-between",
+          }}
+        >
+          <div className="column">
+            <Profile userName={userName} difficultyLevel={difficultyLevel} />
+            {/* {!quitGame &&  */}
+            <ScoreBoard />
+            {/* } */}
+            {quitGame ? (
+              <span className="top-details" onClick={renderLoginForm}>
+                QUIT GAME
+              </span>
+            ) : (
+              <button className="stop-btn" onClick={handleQuitGame}>
+                <img src={CrossIcon} alt="" width="50px" height="50px" />
+                <span className="top-details">STOP GAME</span>
+              </button>
+            )}
+          </div>
 
-        {quitGame ? (
-          <span className="top-details" onClick={renderLoginForm}>
-            QUIT GAME
-          </span>
-        ) : (
-          <button className="stop-btn" onClick={handleQuitGame}>
-            <img src={CrossIcon} alt="" width="50px" height="50px" />
-            <span className="top-details">STOP GAME</span>
-          </button>
-        )}
-      </div>
+          {!quitGame && (
+            <div className="middle-section column">
+              <TargetWord targetWord={item} userInput={userInput} />
+              <Timer
+                timeLimit={timeLimit}
+                key={item}
+                handleQuitGame={handleQuitGame}
+              />
+              <input
+                className="word-input"
+                type="text"
+                value={userInput}
+                onChange={checkUserInput}
+              ></input>
+            </div>
+          )}
 
-      {!quitGame && (
-        <div className="middle-section column">
-          <TargetWord targetWord={item} userInput={userInput} />
-          <Timer timeLimit={timeLimit} handleQuitGame={handleQuitGame} />
-          <input
-            className="word-input"
-            type="text"
-            value={userInput}
-            onChange={checkUserInput}
-          ></input>
+          {quitGame && (
+            <div className="score-section middle-section column">
+              <div className="scoretitle">SCORE : GAME {gameCount}</div>
+              <div className="score">{formatTime(currentScore)}</div>
+              <div className="scoretitle">New High Score</div>
+              <button className="replay-btn" onClick={restartGame}>
+                <img src={ReloadIcon} alt="" width="50px" height="50px" />
+                <span className="top-details">PLAY AGAIN</span>
+              </button>
+            </div>
+          )}
+          <div className="right-section top-details column">
+            <div>fast fingers</div>
+            {/* {!quitGame && ( */}
+            <div className="top-details">SCORE: {formatTime(score)}</div>
+            {/* )} */}
+          </div>
         </div>
       )}
-
-      {quitGame && (
-        <div className="score-section middle-section column">
-          <div className="scoretitle">SCORE : GAME {gameCount}</div>
-          <div claasName="score">{formatTime(score)}</div>
-          <div className="scoretitle">New High Score</div>
-          <button className="replay-btn" onClick={restartGame}>
-            <img src={ReloadIcon} alt="" width="50px" height="50px" />
-            <span className="top-details">PLAY AGAIN</span>
-          </button>
-        </div>
-      )}
-      <div className="right-section top-details column">
-        <div>fast fingers</div>
-        <div className="top-details">SCORE: {formatTime(score)}</div>
-      </div>
-    </div>
+    </>
   );
 }

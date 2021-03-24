@@ -9,11 +9,11 @@ export default function ScoreBoard(props) {
       SCORE BOARD
       {data.map((game, index) => {
         return (
-          <div className={"scores"}>
+          <div className={"scores"} key={index}>
             {game.hasHighScore && (
               <div className={"highScore"}>PERSONAL BEST</div>
             )}
-            <div className={"gameNameWithScore"}>
+            <div className={"game-details"}>
               Game {index + 1} : {formatTime(game.score)}
             </div>
           </div>

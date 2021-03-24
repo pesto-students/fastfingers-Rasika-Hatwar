@@ -15,3 +15,11 @@ export function formatTime(time) {
   }
   return `${minutes}:${seconds}`;
 }
+
+export function newFormatTime(time) {
+  let seconds = Math.floor(time / 1000);
+  let miliseconds = (time % 1000) / 10;
+  return `${seconds < 10 ? `0${seconds}` : seconds}:${
+    miliseconds < 10 ? `0${miliseconds}` : miliseconds
+  }`;
+}
