@@ -14,7 +14,7 @@ export default function ScoreBoard(props) {
               <div className={"highScore"}>PERSONAL BEST</div>
             )}
             <div className={"game-details"}>
-              Game {index + 1} : {formatTime(game.score)}
+              Game {game.gameCount + 1} : {formatTime(game.score)}
             </div>
           </div>
         );
