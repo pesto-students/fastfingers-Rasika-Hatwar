@@ -10,7 +10,7 @@ export default function ScoreBoard(props) {
       {data.map((game, index) => {
         return (
           <div className={"scores"} key={index}>
-            {game.hasHighScore && (
+            {game.isHighScore && (
               <div className={"highScore"}>PERSONAL BEST</div>
             )}
             <div className={"game-details"}>

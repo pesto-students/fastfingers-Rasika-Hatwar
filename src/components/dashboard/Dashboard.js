@@ -13,6 +13,7 @@ import CrossIcon from "../../assets/Icon-cross.svg";
 import LoginForm from "../login/LoginForm";
 
 let currentScore = 0;
+//const sessionStorage = window.sessionStorage;
 export default function Dashboard({
   userName,
   difficultyLevel,
@@ -54,7 +55,10 @@ export default function Dashboard({
       if (!quitGame) {
         currentScore = currentScore + 1;
         setScore(currentScore);
-      } else if (quitGame) clearTimeout(scoreCount);
+      } else if (quitGame) {
+        clearTimeout(scoreCount);
+        setScore(0);
+      }
     }, 1000);
 
     return () => {
@@ -78,20 +82,22 @@ export default function Dashboard({
     const sessionStorage = window.sessionStorage;
     let data = JSON.parse(window.sessionStorage.getItem("scoreBoard")) || [];
     const currentGame = {
+      userName: userName,
       score: score,
-      hasHighScore: false,
+      isHighScore: false,
     };
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].hasHighScore && data[i].score < currentGame.score) {
-        currentGame["hasHighScore"] = true;
-        data[i]["hasHighScore"] = false;
-      }
-    }
+
     if (data.length === 0) {
-      currentGame.hasHighScore = true;
+      currentGame.isHighScore = true;
     }
     if (data.length === 8) {
       data.shift();
+    }
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].isHighScore && data[i].score < currentGame.score) {
+        currentGame["isHighScore"] = true;
+        data[i]["isHighScore"] = false;
+      }
     }
     data.push(currentGame);
     sessionStorage.setItem("scoreBoard", JSON.stringify(data));
@@ -101,10 +107,14 @@ export default function Dashboard({
   };
   const restartGame = () => {
     setQuitGame(false);
+    setScore(0);
+    currentScore = 0;
     setUserInput("");
   };
   const renderLoginForm = () => {
     setShowLogin(true);
+    sessionStorage.clear();
+    setScore(0);
   };
 
   return (
@@ -124,11 +134,7 @@ export default function Dashboard({
           <div className="column">
             <Profile userName={userName} difficultyLevel={difficultyLevel} />
             {!quitGame && <ScoreBoard />}
-            {quitGame ? (
-              <span className="top-details quit-text" onClick={renderLoginForm}>
-                QUIT GAME
-              </span>
-            ) : (
+            {!quitGame && (
               <button className="stop-btn" onClick={handleQuitGame}>
                 <img src={CrossIcon} alt="" width="50px" height="50px" />
                 <span className="top-details">STOP GAME</span>
@@ -157,11 +163,19 @@ export default function Dashboard({
             <div className="score-section middle-section column">
               <div className="score-title">SCORE : GAME {gameCount}</div>
               <div className="score">{formatTime(currentScore)}</div>
-              <div>New High Score</div>
+              <div>New Score</div>
               <button className="replay-btn" onClick={restartGame}>
                 <img src={ReloadIcon} alt="" width="50px" height="50px" />
                 <span className="top-details">PLAY AGAIN</span>
               </button>
+              {quitGame && (
+                <span
+                  className="top-details quit-text"
+                  onClick={renderLoginForm}
+                >
+                  QUIT GAME
+                </span>
+              )}
             </div>
           )}
           <div className="right-section top-details column">

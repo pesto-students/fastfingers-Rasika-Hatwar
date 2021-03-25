@@ -41,6 +41,7 @@ export default function LoginForm() {
     startGame,
     errorMessage,
   } = state;
+
   return (
     <div style={{ display: "flex", flex: 1 }}>
       {!startGame && (
