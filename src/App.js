@@ -1,10 +1,11 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import "./App.css";
+import LoginForm from "./components/login/LoginForm";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Fast Fingers </h1>
+    <div style={{ display: "flex" }}>
+      <LoginForm />
     </div>
   );
 }
