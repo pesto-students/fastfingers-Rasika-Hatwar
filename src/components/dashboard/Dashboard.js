@@ -85,6 +85,7 @@ export default function Dashboard({
       userName: userName,
       score: score,
       isHighScore: false,
+      gameCount: gameCount,
     };
 
     if (data.length === 0) {
@@ -102,7 +103,8 @@ export default function Dashboard({
     data.push(currentGame);
     sessionStorage.setItem("scoreBoard", JSON.stringify(data));
     setQuitGame(true);
-    setGameCount((prevState) => prevState + 1);
+    setGameCount(gameCount + 1);
+    //setGameCount((prevState) => prevState + 1);
   };
   const restartGame = () => {
     setQuitGame(false);
@@ -112,8 +114,8 @@ export default function Dashboard({
   };
   const renderLoginForm = () => {
     setScore(0);
+    currentScore = 0;
     setShowLogin(true);
-    //sessionStorage.clear();
   };
 
   return (
