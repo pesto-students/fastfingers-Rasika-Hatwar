@@ -13,7 +13,7 @@ import CrossIcon from "../../assets/Icon-cross.svg";
 import LoginForm from "../login/LoginForm";
 
 let currentScore = 0;
-//const sessionStorage = window.sessionStorage;
+
 export default function Dashboard({
   userName,
   difficultyLevel,
@@ -27,7 +27,6 @@ export default function Dashboard({
   const [quitGame, setQuitGame] = useState(false);
   const [gameCount, setGameCount] = useState(0);
   const [showLogin, setShowLogin] = useState(false);
-
   const [score, setScore] = useState(0);
 
   const itemShow = () => {
@@ -68,9 +67,9 @@ export default function Dashboard({
 
   const checkUserInput = (e) => {
     setUserInput(e.target.value);
+
     if (e.target.value.toLocaleLowerCase() === item.toLocaleLowerCase()) {
       itemShow();
-
       setFactor((prevState) => parseFloat(prevState) + 0.01);
       if (parseFloat(factor) >= 1.5 && parseFloat(factor) < 2)
         setLevel("MEDIUM");
@@ -79,6 +78,7 @@ export default function Dashboard({
   };
 
   const handleQuitGame = () => {
+    setScore(0);
     const sessionStorage = window.sessionStorage;
     let data = JSON.parse(window.sessionStorage.getItem("scoreBoard")) || [];
     const currentGame = {
@@ -103,7 +103,6 @@ export default function Dashboard({
     sessionStorage.setItem("scoreBoard", JSON.stringify(data));
     setQuitGame(true);
     setGameCount((prevState) => prevState + 1);
-    setScore(0);
   };
   const restartGame = () => {
     setQuitGame(false);
@@ -112,9 +111,9 @@ export default function Dashboard({
     setUserInput("");
   };
   const renderLoginForm = () => {
-    setShowLogin(true);
-    sessionStorage.clear();
     setScore(0);
+    setShowLogin(true);
+    //sessionStorage.clear();
   };
 
   return (
