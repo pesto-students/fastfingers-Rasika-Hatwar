@@ -74,7 +74,7 @@ export default function LoginForm() {
 
           <div className="start-game subTitle" onClick={showDashboard}>
             <img src={playbutton} alt="Start" />
-            <h3 className="subtitle-text">START GAME</h3>
+            <h3>START GAME</h3>
           </div>
         </div>
       )}

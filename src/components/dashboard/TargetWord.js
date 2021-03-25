@@ -1,4 +1,5 @@
 import React from "react";
+import "./dashboard.css";
 
 export default function TargetWord({ targetWord, userInput }) {
   let content = targetWord.split("").map((char, i) => {

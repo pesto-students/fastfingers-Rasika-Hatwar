@@ -9,10 +9,12 @@ let timerInterval = "";
 export default function Timer({ timeLimit, handleQuitGame }) {
   const [timeLeft, setTimeLeft] = useState(timeLimit);
   const [stroke, setStroke] = useState("283 283");
+
   useEffect(() => {
     timePassed = 0;
     setTimeLeft(timeLimit);
   }, [timeLimit]);
+
   useEffect(() => {
     timerInterval = setInterval(() => {
       if (timeLeft > 0) {
@@ -28,10 +30,12 @@ export default function Timer({ timeLimit, handleQuitGame }) {
     }, 100);
     return () => clearInterval(timerInterval);
   }, [handleQuitGame, timeLeft, timeLimit]);
+
   function calculateTimeFraction(remainingTime, totalTimeLimit) {
     const rawTimeFraction = remainingTime / totalTimeLimit;
     return rawTimeFraction - (1 / totalTimeLimit) * (1 - rawTimeFraction);
   }
+
   return (
     <div className="base-timer">
       <svg className="base-timer__svg" viewBox="0 0 100 100">
@@ -54,6 +58,7 @@ export default function Timer({ timeLimit, handleQuitGame }) {
     </div>
   );
 }
+
 Timer.protoTypes = {
   timeLimit: ProtoTypes.number.isRequired,
   handleQuitGame: ProtoTypes.func.isRequired,
